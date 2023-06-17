@@ -1,28 +1,36 @@
-import { useState, useEffect } from "react";
+import React from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
-const Text =() =>{
 
-const [text, setText] = useState('');
 
-useEffect(() => {
-    console.log('component mounted');
+function GetDetails() {
 
-    return () => {
-        console.log('compo unmounted');
-    }
-}, []);
- 
+    const [ text, setText ] = useState('');
+    const [gottenText, setGottenText ] = useState('');
+
+const getPredict=(d) =>{
+    axios.get(`https://api.agify.io/?name=${d}`)
+    .then((res) => {
+        setGottenText(res.data.age); 
+    })
+}
+
     return (
         <div>
             <input 
-                onChange={(e) =>{
-                    setText(e.target.value);
-                }}
+            defaultValue={text}
+            onChange={(e) =>{setText(e.target.value)}}
             />
-            <h1>{ text } </h1>
+            <button
+            onClick={ getPredict(text) }
+            >
+                Predict Age
+            </button>
+            <h5>{ gottenText }</h5>
+
         </div>
     )
-
 }
 
-export default Text;
+export default GetDetails;
