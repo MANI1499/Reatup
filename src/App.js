@@ -10,7 +10,7 @@ function App() {
   const [ party ] = useState('party');
   const [ family ] = useState('family');
   const [gottenText, setGottenText ] = useState({
-    excuse: 'here for you',
+    excuse: 'In need of an excuse?',
     id: 1,
   });
 
