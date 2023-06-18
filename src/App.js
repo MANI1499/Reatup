@@ -6,33 +6,59 @@ import { useEffect, useState } from 'react';
 
 function App() {
 
-  const [ text, setText ] = useState('');
-  const [gottenText, setGottenText ] = useState({});
+  const [ office ] = useState('office');
+  const [ party ] = useState('party');
+  const [ family ] = useState('family');
+  const [gottenText, setGottenText ] = useState({
+    excuse: 'here for you',
+    id: 1,
+  });
 
-const getPredict=() =>{
-  axios.get(`https://api.agify.io/?name=${text}`)
-  .then((res) => {
-    console.log(res.data)
-      setGottenText(res.data); 
-  })
-}
+  const getParty =() =>{
+    axios.get(`https://excuser-three.vercel.app/v1/excuse/${party}/`)
+    .then((res) => {
+      console.log(res.data[0])
+      setGottenText(res.data[0])
+    })
+  }
+
+  const getFamily =() =>{
+    axios.get(`https://excuser-three.vercel.app/v1/excuse/${family}/`)
+    .then((res) => {
+      setGottenText(res.data[0])
+    })
+  }
+
+  const getOffice =() =>{
+    axios.get(`https://excuser-three.vercel.app/v1/excuse/${office}/`)
+    .then((res) => {
+      setGottenText(res.data[0])
+    })
+  }
   
 
   return (
     <div>
-        <input 
-        defaultValue={text}
-        onChange={(e) =>{setText(e.target.value)}}
-        />
-        <button
-        onClick={ getPredict }
-        >
-            Predict Age
-        </button>
-        <h5>Name: { gottenText?.name }</h5>
-        <h5>Age: { gottenText?.age }</h5>
-        <h5>Count: { gottenText?.count }</h5>
+       <button
+       onClick={getParty}
+       >
+        party 
+       </button><br />
 
+       <button
+       onClick={getFamily}
+       >
+        family
+       </button><br />
+
+       <button
+       onClick={getOffice}
+       >
+        Office
+       </button><br />
+
+       <h5>{ gottenText?.excuse }</h5>
+       <h5>{ gottenText?.category }</h5>
     </div>
 )
 }
