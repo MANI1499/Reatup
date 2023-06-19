@@ -1,66 +1,33 @@
 import './App.css';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { Home } from "./pages/Home";
+import { Contact } from './pages/Contact';
+import { Profile } from './pages/Profile';
+import { Navbar } from './pages/Navbar';
+import { useState, createContext } from 'react';
 
 
+export const AppContext = createContext();
 
 function App() {
 
-  const [ office ] = useState('office');
-  const [ party ] = useState('party');
-  const [ family ] = useState('family');
-  const [gottenText, setGottenText ] = useState({
-    excuse: 'In need of an excuse?',
-    id: 1,
-  });
+  const [username, setUsername] = useState('Mani');
 
-  const getParty =() =>{
-    axios.get(`https://excuser-three.vercel.app/v1/excuse/${party}/`)
-    .then((res) => {
-      console.log(res.data[0])
-      setGottenText(res.data[0])
-    })
-  }
+  return <div className='App'> 
+  <AppContext.Provider  value={{ username, setUsername }}>
+      <Router>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={ <Home  /> } />
+          <Route path="/contact" element={ <Contact  /> } />
+          <Route path="/profile" element={ <Profile /> } />
+          <Route path="/*" element={ <h1>404 Page Not Found </h1> } />
+        </Routes>
+      </Router>
+      </AppContext.Provider>
+    </div>;
 
-  const getFamily =() =>{
-    axios.get(`https://excuser-three.vercel.app/v1/excuse/${family}/`)
-    .then((res) => {
-      setGottenText(res.data[0])
-    })
-  }
-
-  const getOffice =() =>{
-    axios.get(`https://excuser-three.vercel.app/v1/excuse/${office}/`)
-    .then((res) => {
-      setGottenText(res.data[0])
-    })
-  }
   
-
-  return (
-    <div>
-       <button
-       onClick={getParty}
-       >
-        party 
-       </button><br />
-
-       <button
-       onClick={getFamily}
-       >
-        family
-       </button><br />
-
-       <button
-       onClick={getOffice}
-       >
-        Office
-       </button><br />
-
-       <h5>{ gottenText?.excuse }</h5>
-       <h5>{ gottenText?.category }</h5>
-    </div>
-)
 }
 
 export default App;
